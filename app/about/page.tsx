@@ -14,8 +14,8 @@ const AboutPage = () => {
   return (
     <>
       <Breadcrumb
-        pageName="About Page"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
+        pageName="About us"
+        description="The EcoDocu initiative aims to equip youth leaders and professionals with the knowledge and abilities to effectively promote environmental education via documentary films."
       />
       <AboutSectionOne />
       <AboutSectionTwo />

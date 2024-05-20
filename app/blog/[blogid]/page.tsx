@@ -1,8 +1,10 @@
+'use client'
+
 import SharePost from "@/components/Blog/SharePost";
 import Blog from "@/types/blog"
 import TagButton from "@/components/Blog/TagButton";
 import Image from "next/image";
-
+import { useParams } from 'next/navigation'
 import { Metadata } from "next";
 
 // export const metadata: Metadata = {
@@ -12,6 +14,7 @@ import { Metadata } from "next";
 // };
 
 const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
+  const params = useParams<{ tag: string; item: string }>()
   return (
     <>
       <section className="pb-[120px] pt-[150px]">
@@ -20,7 +23,7 @@ const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
             <div className="w-full px-4 lg:w-8/12">
               <div>
                 <h2 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-                  lolo
+                  lolo {params.blogid}
                 </h2>
                 <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10">
                   <div className="flex flex-wrap items-center">
