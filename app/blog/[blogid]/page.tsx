@@ -1,20 +1,72 @@
 'use client'
 
-import SharePost from "@/components/Blog/SharePost";
 import Blog from "@/types/blog"
 import TagButton from "@/components/Blog/TagButton";
 import Image from "next/image";
 import { useParams } from 'next/navigation'
 import { Metadata } from "next";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "@/app/firebaseConfig";
+import { useEffect, useState } from "react";
+import ReactMarkdown from 'react-markdown';
+import {CircularProgress} from "@nextui-org/progress";
+import Slider from '@madzadev/image-slider'
+import Partners from "@/app/partners/page";
+import "@madzadev/image-slider/dist/index.css";
 
-// export const metadata: Metadata = {
-//   title: "Blog Details Page | Free Next.js Template for Startup and SaaS",
-//   description: "This is Blog Details Page for Startup Nextjs Template",
-//   // other metadata
-// };
 
-const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
-  const params = useParams<{ tag: string; item: string }>()
+async function fetchSingleDocFromFirestore(postId) {
+  const docRef = doc(db, "news", postId);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return { id: docSnap.id, ...docSnap.data() };
+  } else {
+    console.log("No such document!");
+    return null;
+  }
+}
+
+
+
+const BlogDetailsPage = () => {
+  const params = useParams<{ blog: Blog}>()
+  const [news, setNews] = useState([]);
+  const [imagesArr, setImagesArr] = useState([]);
+  const docId = "0";
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchSingleDocFromFirestore(params.blogid);
+      setNews(data);
+    }
+    fetchData();
+  }, [params.blogid]);
+
+ 
+  function getUrlArray(news) {
+    return new Promise(resolve => {
+      const intervalId = setInterval(() => {
+        if (news.imageURL) {
+          clearInterval(intervalId);
+          resolve(news.imageURL);
+        }
+      }, 100); // Check every 100ms
+    });
+  }
+  let imagesarr=[1];
+  getUrlArray(news).then(urlArray => {
+    console.log("urlArray", urlArray);
+    if (urlArray) {
+      setImagesArr( urlArray.map(url => ({ url })));
+      console.log("functioni meji",imagesArr);
+      urlArray = imagesarr;
+      console.log('this is urlArray', urlArray);
+    }
+  });
+   
+if (imagesArr.length===0) {
+  return  <section className="pb-[120px] pt-[150px]"> <CircularProgress aria-label="Loading..." /> </section>
+}
   return (
     <>
       <section className="pb-[120px] pt-[150px]">
@@ -23,25 +75,14 @@ const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
             <div className="w-full px-4 lg:w-8/12">
               <div>
                 <h2 className="mb-8 text-3xl font-bold leading-tight text-black dark:text-white sm:text-4xl sm:leading-tight">
-                  lolo {params.blogid}
+                  {news.title}
+                  
                 </h2>
                 <div className="mb-10 flex flex-wrap items-center justify-between border-b border-body-color border-opacity-10 pb-4 dark:border-white dark:border-opacity-10">
                   <div className="flex flex-wrap items-center">
                     <div className="mb-5 mr-10 flex items-center">
-                      <div className="mr-4">
-                        <div className="relative h-10 w-10 overflow-hidden rounded-full">
-                          <Image
-                            src="/images/blog/author-02.png"
-                            alt="author"
-                            fill
-                          />
-                        </div>
-                      </div>
-                      <div className="w-full">
-                        <span className="mb-1 text-base font-medium text-body-color">
-                          By <span>Musharof Chy</span>
-                        </span>
-                      </div>
+                      
+                      
                     </div>
                     <div className="mb-5 flex items-center">
                       <p className="mr-5 flex items-center text-base font-medium text-body-color">
@@ -63,23 +104,9 @@ const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
                             <path d="M13.2637 3.3697H7.64754V2.58105C8.19721 2.43765 8.62738 1.91189 8.62738 1.31442C8.62738 0.597464 8.02992 0 7.28906 0C6.54821 0 5.95074 0.597464 5.95074 1.31442C5.95074 1.91189 6.35702 2.41376 6.93058 2.58105V3.3697H1.31442C0.597464 3.3697 0 3.96716 0 4.68412V13.2637C0 13.9807 0.597464 14.5781 1.31442 14.5781H13.2637C13.9807 14.5781 14.5781 13.9807 14.5781 13.2637V4.68412C14.5781 3.96716 13.9807 3.3697 13.2637 3.3697ZM6.6677 1.31442C6.6677 0.979841 6.93058 0.716957 7.28906 0.716957C7.62364 0.716957 7.91042 0.979841 7.91042 1.31442C7.91042 1.649 7.64754 1.91189 7.28906 1.91189C6.95448 1.91189 6.6677 1.6251 6.6677 1.31442ZM1.31442 4.08665H13.2637C13.5983 4.08665 13.8612 4.34954 13.8612 4.68412V6.45261H0.716957V4.68412C0.716957 4.34954 0.979841 4.08665 1.31442 4.08665ZM13.2637 13.8612H1.31442C0.979841 13.8612 0.716957 13.5983 0.716957 13.2637V7.16957H13.8612V13.2637C13.8612 13.5983 13.5983 13.8612 13.2637 13.8612Z" />
                           </svg>
                         </span>
-                        12 Jan 2024
+                        {news.publishDate}
                       </p>
-                      <p className="mr-5 flex items-center text-base font-medium text-body-color">
-                        <span className="mr-3">
-                          <svg
-                            width="18"
-                            height="13"
-                            viewBox="0 0 18 13"
-                            className="fill-current"
-                          >
-                            <path d="M15.6375 0H1.6875C0.759375 0 0 0.759375 0 1.6875V10.6875C0 11.3062 0.309375 11.8406 0.84375 12.15C1.09687 12.2906 1.40625 12.375 1.6875 12.375C1.96875 12.375 2.25 12.2906 2.53125 12.15L5.00625 10.7156C5.11875 10.6594 5.23125 10.6312 5.34375 10.6312H15.6094C16.5375 10.6312 17.2969 9.87187 17.2969 8.94375V1.6875C17.325 0.759375 16.5656 0 15.6375 0ZM16.3406 8.94375C16.3406 9.3375 16.0312 9.64687 15.6375 9.64687H5.37187C5.09062 9.64687 4.78125 9.73125 4.52812 9.87187L2.05313 11.3063C1.82812 11.4187 1.575 11.4187 1.35 11.3063C1.125 11.1938 1.0125 10.9688 1.0125 10.7156V1.6875C1.0125 1.29375 1.32188 0.984375 1.71563 0.984375H15.6656C16.0594 0.984375 16.3687 1.29375 16.3687 1.6875V8.94375H16.3406Z" />
-                            <path d="M12.2342 3.375H4.69668C4.41543 3.375 4.19043 3.6 4.19043 3.88125C4.19043 4.1625 4.41543 4.3875 4.69668 4.3875H12.2623C12.5435 4.3875 12.7685 4.1625 12.7685 3.88125C12.7685 3.6 12.5154 3.375 12.2342 3.375Z" />
-                            <path d="M11.0529 6.55322H4.69668C4.41543 6.55322 4.19043 6.77822 4.19043 7.05947C4.19043 7.34072 4.41543 7.56572 4.69668 7.56572H11.0811C11.3623 7.56572 11.5873 7.34072 11.5873 7.05947C11.5873 6.77822 11.3342 6.55322 11.0529 6.55322Z" />
-                          </svg>
-                        </span>
-                        50
-                      </p>
+                     
                       <p className="flex items-center text-base font-medium text-body-color">
                         <span className="mr-3">
                           <svg
@@ -96,77 +123,24 @@ const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
                       </p>
                     </div>
                   </div>
-                  <div className="mb-5">
-                    <a
-                      href="#0"
-                      className="inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white"
-                    >
-                      Design
-                    </a>
-                  </div>
+                
                 </div>
                 <div>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat.
-                  </p>
+                
                   <div className="mb-10 w-full overflow-hidden rounded">
                     <div className="relative aspect-[97/60] w-full sm:aspect-[97/44]">
-                      <Image
-                        src="/images/blog/blog-details-02.jpg"
-                        alt="image"
-                        fill
-                        className="object-cover object-center"
-                      />
+                    
+                      <Slider imageList={imagesArr} width={1000} height={500} showArrowControls={true} className="object-cover object-center"/>
                     </div>
                   </div>
                   <p className="mb-8 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Quis enim lobortis scelerisque fermentum. Neque
-                    sodales ut etiam sit amet. Ligula ullamcorper
-                    <strong className="text-primary dark:text-white">
-                      malesuada
-                    </strong>
-                    proin libero nunc consequat interdum varius. Quam
-                    pellentesque nec nam aliquam sem et tortor consequat.
-                    Pellentesque adipiscing commodo elit at imperdiet.
+                    {/* <ReactMarkdown>{news.article}</ReactMarkdown>  */}
+                    <div dangerouslySetInnerHTML={{ __html: news.article }}/>
                   </p>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    Semper auctor neque vitae tempus quam pellentesque nec.
-                    <span className="text-primary underline dark:text-white">
-                      Amet dictum sit amet justo
-                    </span>
-                    donec enim diam. Varius sit amet mattis vulputate enim nulla
-                    aliquet porttitor. Odio pellentesque diam volutpat commodo
-                    sed.
-                  </p>
-                  <h3 className="font-xl mb-10 font-bold leading-tight text-black dark:text-white sm:text-2xl sm:leading-tight lg:text-xl lg:leading-tight xl:text-2xl xl:leading-tight">
-                    Digital marketplace for Ui/Ux designers.
-                  </h3>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    consectetur adipiscing elit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                    mattis vulputate cupidatat.
-                  </p>
-                  <ul className="mb-10 list-inside list-disc text-body-color">
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Consectetur adipiscing elit in voluptate velit.
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Mattis vulputate cupidatat.
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Vulputate enim nulla aliquet porttitor odio pellentesque
-                    </li>
-                    <li className="mb-2 text-base font-medium text-body-color sm:text-lg lg:text-base xl:text-lg">
-                      Ligula ullamcorper malesuada proin
-                    </li>
-                  </ul>
+    
                   <div className="relative z-10 mb-10 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
                     <p className="text-center text-base font-medium italic text-body-color">
-                    The EcoDocu initiative aims to equip youth leaders and professionals with the knowledge and abilities to effectively promote environmental education via documentary films.
+                    The Associació Formació i Sensibilització Barcelona is a recently registered organization that started its activities in 2019 as an initiative group.
                     </p>
                     <span className="absolute left-0 top-0 z-[-1]">
                       <svg
@@ -309,31 +283,8 @@ const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
                       </svg>
                     </span>
                   </div>
-                  <p className="mb-10 text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed lg:text-base lg:leading-relaxed xl:text-lg xl:leading-relaxed">
-                    consectetur adipiscing elit in voluptate velit esse cillum
-                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                    mattis vulputate cupidatat.
-                  </p>
-                  <div className="items-center justify-between sm:flex">
-                    <div className="mb-5">
-                      <h4 className="mb-3 text-sm font-medium text-body-color">
-                        Popular Tags :
-                      </h4>
-                      <div className="flex items-center">
-                        <TagButton text="Design" />
-                        <TagButton text="Development" />
-                        <TagButton text="Info" />
-                      </div>
-                    </div>
-                    <div className="mb-5">
-                      <h5 className="mb-3 text-sm font-medium text-body-color sm:text-right">
-                        Share this post :
-                      </h5>
-                      <div className="flex items-center sm:justify-end">
-                        <SharePost />
-                      </div>
-                    </div>
-                  </div>
+      
+                 
                 </div>
               </div>
             </div>
@@ -342,6 +293,7 @@ const BlogDetailsPage = ({ blog }: { blog: Blog }) => {
       </section>
     </>
   );
+
 };
 
 export default BlogDetailsPage;

@@ -1,17 +1,17 @@
 "use client";
-import SingleBlog from "@/components/Blog/SingleBlog";
-import Breadcrumb from "@/components/Common/Breadcrumb";
-
-
-
 import { getDatabase, get, ref } from "firebase/database";
 import { useState, useEffect } from "react";
 
 import { database, db } from "../firebaseConfig";
 import { getDoc, collection, getDocs } from "firebase/firestore";
+import SingleBlog from "@/components/Blog/SingleBlog";
+import blogData from "@/components/Blog/blogData";
+import Breadcrumb from "@/components/Common/Breadcrumb";
 
-export async function fetchDataFromFirestore(collection_name: string) {
-  const querySnapshot = await getDocs(collection(db, collection_name));
+import { Metadata } from "next";
+
+async function fetchDataFromFirestore() {
+  const querySnapshot = await getDocs(collection(db, "news"));
 
   const data = [];
 
@@ -20,45 +20,53 @@ export async function fetchDataFromFirestore(collection_name: string) {
   });
   return data;
 }
-const Blog = () => {
+const TestBlog = () => {
   const [news, setNews] = useState([]);
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchDataFromFirestore('news');
-      setNews(data.reverse());
+      const data = await fetchDataFromFirestore();
+      setNews(data);
     }
     fetchData();
   }, []);
+
+  //   useEffect(() => {
+  //     const userRef = ref(database, "news");
+
+  //     get(userRef)
+  //       .then((snapshot) => {
+  //         if (snapshot.exists()) {
+  //           const newsArray = Object.entries(snapshot.val()).map(
+  //             ([id, data]) => ({
+  //               id,
+  //               ...data,
+  //             }),
+  //           );
+  //           setNews(newsArray);
+  //         } else {
+  //           console.log("No data available");
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error(error);
+  //       });
+  //   }, []);
   return (
     <>
-      <Breadcrumb
-        pageName="News"
-        description="You can find the latest news about The Associació Formació i Sensibilització Barcelona and not only."
-      />
-
       <section className="pb-[120px] pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap justify-center">
-            {/* {blogData
-              .slice()
-              .reverse()
-              .map((blog) => (
-                <div
-                  key={blog.id}
-                  className="w-full px-4 md:w-2/3 lg:w-1/2 xl:w-1/3"
-                >
-                  <SingleBlog blog={blog} />
-                </div>
-              ))} */}
+            <input type="text" />
 
-{news.map((newsItem) => (
-              <div key={newsItem.id} className="w-full px-4 md:w-2/3 lg:w-1/2 xl:w-1/3">
-                <SingleBlog blog={newsItem} />
+            {news.map((newsItem) => (
+              <div key={newsItem.id}>
+                <h2>{newsItem.title}</h2>
+                <p>{newsItem.article}</p>
               </div>
             ))}
           </div>
 
-          {/* <div
+          <div
             className="wow fadeInUp -mx-4 flex flex-wrap"
             data-wow-delay=".15s"
           >
@@ -119,11 +127,11 @@ const Blog = () => {
                 </li>
               </ul>
             </div>
-          </div> */}
+          </div>
         </div>
       </section>
     </>
   );
 };
 
-export default Blog;
+export default TestBlog;

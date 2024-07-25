@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <>
       <footer
-        className="wow fadeInUp dark:bg-gray-dark relative z-10 bg-white pt-16 md:pt-20 lg:pt-24"
+        className="wow fadeInUp relative z-10 bg-white pt-16 dark:bg-gray-dark md:pt-20 lg:pt-24"
         data-wow-delay=".1s"
       >
         <div className="container">
@@ -29,29 +29,31 @@ const Footer = () => {
                     height={30}
                   />
                 </Link>
-                <p className="dark:text-body-color-dark mb-9 text-base leading-relaxed text-body-color">
-                The EcoDocu initiative aims to equip youth leaders and professionals with the knowledge and abilities to effectively promote
-                environmental education via documentary films.
+                <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
+                  The Associació Formació i Sensibilització Barcelona is a
+                  recently registered organization that started its activities
+                  in 2019 as an initiative group.
                 </p>
                 <div className="flex items-center">
                   <a
                     href=""
                     aria-label="social-link"
-                    className="dark:text-body-color-dark mr-6 text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
-                      width="9"
-                      height="18"
-                      viewBox="0 0 9 18"
+                      width="19"
+                      height="14"
+                      viewBox="0 0 24 24"
                       className="fill-current"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M8.13643 7H6.78036H6.29605V6.43548V4.68548V4.12097H6.78036H7.79741C8.06378 4.12097 8.28172 3.89516 8.28172 3.55645V0.564516C8.28172 0.254032 8.088 0 7.79741 0H6.02968C4.11665 0 2.78479 1.58064 2.78479 3.92339V6.37903V6.94355H2.30048H0.65382C0.314802 6.94355 0 7.25403 0 7.70564V9.7379C0 10.1331 0.266371 10.5 0.65382 10.5H2.25205H2.73636V11.0645V16.7379C2.73636 17.1331 3.00273 17.5 3.39018 17.5H5.66644C5.81174 17.5 5.93281 17.4153 6.02968 17.3024C6.12654 17.1895 6.19919 16.9919 6.19919 16.8226V11.0927V10.5282H6.70771H7.79741C8.11222 10.5282 8.35437 10.3024 8.4028 9.96371V9.93548V9.90726L8.74182 7.95968C8.76604 7.7621 8.74182 7.53629 8.59653 7.31048C8.54809 7.16935 8.33016 7.02823 8.13643 7Z" />
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.17.054 1.796.24 2.215.41.528.206.904.455 1.302.852.396.396.646.773.852 1.302.17.419.356 1.045.41 2.215.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.054 1.17-.24 1.796-.41 2.215-.206.528-.455.904-.852 1.302-.396.396-.773.646-1.302.852-.419.17-1.045.356-2.215.41-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.17-.054-1.796-.24-2.215-.41-.528-.206-.904-.455-1.302-.852-.396-.396-.646-.773-.852-1.302-.17-.419-.356-1.045-.41-2.215-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.054-1.17.24-1.796.41-2.215.206-.528.455-.904.852-1.302.396-.396.773-.646 1.302-.852.419-.17 1.045-.356 2.215-.41 1.266-.058 1.646-.07 4.85-.07m0-2.163C8.74 0 8.332.01 7.052.072 5.772.133 4.682.332 3.738.715 2.801 1.093 2.093 1.641 1.358 2.373.641 3.106.092 3.814-.283 4.738c-.383.944-.582 2.034-.643 3.314C0 8.33 0 8.74 0 12s.01 3.67.072 4.948c.061 1.28.26 2.37.643 3.314.375.924.924 1.632 1.658 2.366.732.732 1.441 1.282 2.365 1.658.944.383 2.034.582 3.314.643C8.332 24 8.74 24 12 24s3.67-.01 4.948-.072c1.28-.061 2.37-.26 3.314-.643.924-.375 1.632-.924 2.365-1.658.732-.732 1.282-1.441 1.658-2.365.383-.944.582-2.034.643-3.314.061-1.278.072-1.686.072-4.948s-.01-3.67-.072-4.948c-.061-1.28-.26-2.37-.643-3.314-.375-.924-.924-1.632-1.658-2.365-.732-.732-1.441-1.282-2.365-1.658-.944-.383-2.034-.582-3.314-.643C15.67.01 15.26 0 12 0zm0 5.838c-3.398 0-6.162 2.764-6.162 6.162s2.764 6.162 6.162 6.162 6.162-2.764 6.162-6.162-2.764-6.162-6.162-6.162zm0 10.162c-2.206 0-4-1.794-4-4s1.794-4 4-4 4 1.794 4 4-1.794 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.441s.645 1.441 1.441 1.441 1.441-.645 1.441-1.441-.645-1.441-1.441-1.441z" />
                     </svg>
                   </a>
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark mr-6 text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="19"
@@ -65,7 +67,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark mr-6 text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="mr-6 text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="18"
@@ -79,7 +81,7 @@ const Footer = () => {
                   <a
                     href="/"
                     aria-label="social-link"
-                    className="dark:text-body-color-dark text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                    className="text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                   >
                     <svg
                       width="17"
@@ -102,26 +104,26 @@ const Footer = () => {
                 <ul>
                   <li>
                     <a
-                      href="/blogs"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/blog"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Blog
+                      News
                     </a>
                   </li>
                   <li>
                     <a
-                      href="/pricing"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="/partners"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Pricing
+                      Partners
                     </a>
                   </li>
                   <li>
                     <a
                       href="/about"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      About
+                      About us
                     </a>
                   </li>
                 </ul>
@@ -131,18 +133,18 @@ const Footer = () => {
             <div className="w-full px-4 sm:w-1/2 md:w-1/2 lg:w-2/12 xl:w-2/12">
               <div className="mb-12 lg:mb-16">
                 <h2 className="mb-10 text-xl font-bold text-black dark:text-white">
-                  Terms
+                  FS Network
                 </h2>
                 <ul>
                   <li>
                     <a
-                      href="/"
-                      className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
+                      href="https://fslux.lu/"
+                      className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      TOS
+                      Formation et Sensibilisation de Luxembourg
                     </a>
                   </li>
-                  <li>
+                  {/* <li>
                     <a
                       href="/"
                       className="dark:text-body-color-dark mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:hover:text-primary"
@@ -157,12 +159,12 @@ const Footer = () => {
                     >
                       Refund Policy
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
 
-            <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-3/12">
+            {/* <div className="w-full px-4 md:w-1/2 lg:w-4/12 xl:w-3/12">
               <div className="mb-12 lg:mb-16">
                 <h2 className="mb-10 text-xl font-bold text-black dark:text-white">
                   Support & Help
@@ -194,15 +196,15 @@ const Footer = () => {
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
           <div className="py-8">
             <p className="text-center text-base text-body-color dark:text-white">
-              The website was created by{" "}
+              The website was created by project ...{" "}
               <a href="/" rel="nofollow noopener">
-                Gev
+               saffs
               </a>
             </p>
           </div>

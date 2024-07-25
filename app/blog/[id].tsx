@@ -1,6 +1,6 @@
 // pages/blog/[id].tsx
 import { useRouter } from 'next/router';
-import BlogDetailsPage from '../blog-details/page';
+// import BlogDetailsPage from '../blog-details/page';
 import blogData from '@/components/Blog/blogData';
 
 export default function BlogPost() {
@@ -10,5 +10,5 @@ export default function BlogPost() {
   // Convert id to a string before comparison
   const blogPost = blogData.find((post) => post.id.toString() === id);
 
-  return <BlogDetailsPage blog={blogPost} />;
+  // return <BlogDetailsPage blog={blogPost} />;
 }

@@ -15,10 +15,10 @@ const AboutPage = () => {
     <>
       <Breadcrumb
         pageName="About us"
-        description="The EcoDocu initiative aims to equip youth leaders and professionals with the knowledge and abilities to effectively promote environmental education via documentary films."
+        description="The Associació Formació i Sensibilització Barcelona is a recently registered organization that started its activities in 2019 as an initiative group."
       />
       <AboutSectionOne />
-      <AboutSectionTwo />
+      {/* <AboutSectionTwo /> */}
     </>
   );
 };

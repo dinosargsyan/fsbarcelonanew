@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "https://fsbarcelona.org/",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./blog"]
     }
   }
 }
