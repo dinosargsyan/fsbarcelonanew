@@ -8,10 +8,10 @@ import { getDatabase, get, ref } from "firebase/database";
 import { useState, useEffect } from "react";
 
 import { database, db } from "../firebaseConfig";
-import { getDoc, collection, getDocs } from "firebase/firestore";
+import { getDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 
 export async function fetchDataFromFirestore(collection_name: string) {
-  const querySnapshot = await getDocs(collection(db, collection_name));
+  const querySnapshot = await getDocs(query(collection(db, collection_name), orderBy('publishDate')));
 
   const data = [];
 
