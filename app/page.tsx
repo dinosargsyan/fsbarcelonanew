@@ -11,11 +11,11 @@ import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import Video from "@/components/Video";
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
   title: "Associació Formació I Sensibilització Barcelona",
   description: "Associació Formació I Sensibilització Barcelona",
   // other metadata
+ 
 };
 
 export default function Home() {

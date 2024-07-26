@@ -4,8 +4,11 @@ import React, { useEffect, useState } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 import { fetchDataFromFirestore } from "../blog/page";
 import { Link } from "@nextui-org/link";
+import { Metadata } from "next";
 
 fetchDataFromFirestore("partners");
+
+
 
 export default function Partners() {
   const [partners, setPartners] = useState([]);
