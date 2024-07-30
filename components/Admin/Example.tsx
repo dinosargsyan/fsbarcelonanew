@@ -3,8 +3,32 @@
 import React, { useState, useRef, useMemo } from "react";
 import JoditEditor from "jodit-react";
 import { db, storage } from "../../app/firebaseConfig";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection,getFirestore, query, orderBy, limit, getDocs, doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+
+
+async function getNextDocId(db, collectionName) {
+  const collectionRef = collection(db, collectionName);
+  const q = query(collectionRef, orderBy("__name__", "desc"), limit(1));
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    return "1"; // If there are no documents, return "1" as the first document ID
+  }
+
+  const lastDocId = querySnapshot.docs[0].id;
+  const lastDocIdNum = parseInt(lastDocId, 10);
+
+  if (isNaN(lastDocIdNum)) {
+    throw new Error(`The document ID "${lastDocId}" is not a valid number.`);
+  }
+
+  const newDocId = (lastDocIdNum + 1).toString();
+  return newDocId;
+}
+
+
 
 async function addDataToFirestore(
   title: string,
@@ -13,15 +37,28 @@ async function addDataToFirestore(
   tags: string,
   uploadedURL: string[]
 ) {
+
+  // const collectionRef = collection(db, "news");
+  // const q = query(collectionRef, orderBy("__name__", "desc"), limit(1));
+  // const querySnapshot = await getDocs(q);
+  // const lastDocid = querySnapshot.docs[0].id;
+  // const lastDocidNum = parseInt(lastDocid, 10);
+  // const newDocId = (lastDocidNum + 1).toString();
+
+  // console.log("iddd", lastDocid);
+  // console.log("query snapshot", querySnapshot);
   try {
-    const docRef = await addDoc(collection(db, "news"), {
+    const newDocId =  await getNextDocId(db, "news");
+    const collectionRef = collection(db, "news");
+    const newDocRef = doc(collectionRef, newDocId) 
+    await setDoc(newDocRef, {
       title: title,
       article: article,
       publishDate: publishDate,
       tags: [tags],
       imageURL: uploadedURL,
     });
-    console.log("Document was written with the id", docRef.id);
+    console.log("Document was written with the id", newDocRef.id);
     return true;
   } catch (error) {
     console.error("Error is", error);
@@ -82,7 +119,8 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
 
     try {
       for (const file of Array.from(files)) {
-        const storageRef = ref(storage, `images/${file.name}`);
+        const newDocId = await getNextDocId(db, "news");
+        const storageRef = ref(storage, `images/${newDocId}/${file.name}`);
         await uploadBytes(storageRef, file);
         const url = await getDownloadURL(storageRef);
         uploadedURLs.push(url);
