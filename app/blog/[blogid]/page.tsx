@@ -5,7 +5,7 @@ import TagButton from "@/components/Blog/TagButton";
 import Image from "next/image";
 import { useParams } from 'next/navigation'
 import { Metadata } from "next";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, updateDoc, increment } from "firebase/firestore";
 import { db } from "@/app/firebaseConfig";
 import { useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown';
@@ -13,6 +13,19 @@ import {CircularProgress} from "@nextui-org/progress";
 import Slider from '@madzadev/image-slider'
 import Partners from "@/app/partners/page";
 import "@madzadev/image-slider/dist/index.css";
+
+
+const incrementView = async (collection, docId) => {
+  const docRef = doc(db, collection, docId);
+  try {
+    await updateDoc(docRef, {
+      views: increment(0.5),
+    });
+    console.log(`Document ${docId} view count incremented by 1`);
+  } catch (error) {
+    console.error("Error updating document: ", error);
+  }
+};
 
 
 async function fetchSingleDocFromFirestore(postId) {
@@ -37,6 +50,7 @@ const BlogDetailsPage = () => {
   useEffect(() => {
     async function fetchData() {
       const data = await fetchSingleDocFromFirestore(params.blogid);
+      incrementView('news',params.blogid);
       setNews(data);
     }
     fetchData();
@@ -119,7 +133,7 @@ if (imagesArr.length===0) {
                             <path d="M19.7559 5.625C17.6934 2.375 14.1309 0.4375 10.2559 0.4375C6.38086 0.4375 2.81836 2.375 0.755859 5.625C0.630859 5.84375 0.630859 6.125 0.755859 6.34375C2.81836 9.59375 6.38086 11.5312 10.2559 11.5312C14.1309 11.5312 17.6934 9.59375 19.7559 6.34375C19.9121 6.125 19.9121 5.84375 19.7559 5.625ZM10.2559 10.4375C6.84961 10.4375 3.69336 8.78125 1.81836 5.96875C3.69336 3.1875 6.84961 1.53125 10.2559 1.53125C13.6621 1.53125 16.8184 3.1875 18.6934 5.96875C16.8184 8.78125 13.6621 10.4375 10.2559 10.4375Z" />
                           </svg>
                         </span>
-                        35
+                        {news.views+1}
                       </p>
                     </div>
                   </div>

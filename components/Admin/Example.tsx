@@ -35,7 +35,8 @@ async function addDataToFirestore(
   article: string,
   publishDate: string,
   tags: string,
-  uploadedURL: string[]
+  uploadedURL: string[],
+  views: number
 ) {
 
   // const collectionRef = collection(db, "news");
@@ -57,6 +58,7 @@ async function addDataToFirestore(
       publishDate: publishDate,
       tags: [tags],
       imageURL: uploadedURL,
+      views:0,
     });
     console.log("Document was written with the id", newDocRef.id);
     return true;
@@ -96,7 +98,8 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
       content,
       publishDate,
       tags || "",
-      uploadedURLs
+      uploadedURLs,
+      
     );
     if (added) {
       setTitle("");
