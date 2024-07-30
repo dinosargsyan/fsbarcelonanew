@@ -19,7 +19,7 @@ const incrementView = async (collection, docId) => {
   const docRef = doc(db, collection, docId);
   try {
     await updateDoc(docRef, {
-      views: increment(0.5),
+      views: increment(1),
     });
     console.log(`Document ${docId} view count incremented by 1`);
   } catch (error) {
