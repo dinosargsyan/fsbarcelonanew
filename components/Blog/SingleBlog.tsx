@@ -36,7 +36,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
               {title}
             </Link>
           </h3>
-          <p className="mb-6 border-b border-body-color border-opacity-10 pb-6 text-base font-medium text-body-color dark:border-white dark:border-opacity-10">
+          <p className="mb-6  pb-6 text-base font-medium text-body-color dark:border-white dark:border-opacity-10">
           <div dangerouslySetInnerHTML={{ __html: truncateString(article, 170) }}/>
          
           </p>
@@ -46,6 +46,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
              
             </div>
             
+            <div className="border-t border-body-color border-opacity-10 ">
             <div className="inline-block">
               <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
                 Date
@@ -71,6 +72,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
                         </span>
                         {views}
                       </p>
+              </div>
               </div>
               
           </div>
