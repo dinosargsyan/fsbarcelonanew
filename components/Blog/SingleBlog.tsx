@@ -2,11 +2,20 @@ import { Blog } from "@/types/blog";
 import Image from "next/image";
 import Link from "next/link";
 
-export function truncateString(str, num) {
+export function truncateString(str, num, title) {
   if (str.length <= num) {
     return str;
   }
+  if (title.length >= 100){
   return str.slice(0, num) + "...";
+  }
+  if(title.length <100 && title.lenght >= 50){
+    return str.slice(0, num+50) + "...";
+  }
+  if(title.length <50 ){
+    return str.slice(0, num+100) + "...";
+  }
+
 }
 
 
@@ -37,7 +46,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
             </Link>
           </h3>
           <p className="mb-6  pb-6 text-base font-medium text-body-color dark:border-white dark:border-opacity-10">
-          <div dangerouslySetInnerHTML={{ __html: truncateString(article, 170) }}/>
+          <div dangerouslySetInnerHTML={{ __html: truncateString(article, 170, title) }}/>
          
           </p>
           <div className="flex items-center">
@@ -46,7 +55,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
              
             </div>
             
-            <div className="border-t border-body-color border-opacity-10 ">
+            <div className="border-t border-body-color border-opacity-10 absolute bottom-7">
             <div className="inline-block">
               <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
                 Date

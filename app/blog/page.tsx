@@ -11,11 +11,11 @@ import { database, db } from "../firebaseConfig";
 import { getDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Metadata } from "next";
 
-export const metadata1: Metadata = {
-  title: "Blog Page | Associació Formació i Sensibilització Barcelona",
-  description: "This is Blog Page for Associació Formació i Sensibilització Barcelona",
-  // other metadata
-};
+// export const metadata: Metadata = {
+//   title: "Blog Page | Associació Formació i Sensibilització Barcelona",
+//   description: "This is Blog Page for Associació Formació i Sensibilització Barcelona",
+//   // other metadata
+// };
 
 export async function fetchDataFromFirestore(collection_name: string) {
   const querySnapshot = await getDocs(query(collection(db, collection_name), orderBy('publishDate')));
