@@ -30,7 +30,7 @@ const Footer = () => {
                   />
                 </Link>
                 <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  The Slogan of Associació Formació i Sensibilització Barcelona is "Imagine It. Create It. Achieve It"
+                  The Slogan of Associació Formació i Sensibilització Barcelona is  &quot; Imagine It. Create It. Achieve It &quot;
                 </p>
                 <div className="flex items-center">
                   <a
@@ -200,7 +200,7 @@ const Footer = () => {
           <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D2D8E183] to-transparent dark:via-[#959CB183]"></div>
           <div className="py-8">
             <p className="text-center text-base text-body-color dark:text-white">
-            The website was created within the framework of Erasmus+ Training Course `&quot;`EcoDocu`&quot;` funded by The European Union.
+            The website was created within the framework of Erasmus+ Training Course &quot; EcoDocu &quot; funded by The European Union.
               
             </p>
           </div>
