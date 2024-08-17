@@ -154,7 +154,7 @@ if (imagesArr.length===0) {
     
                   <div className="relative z-10 mb-10 overflow-hidden rounded-md bg-primary bg-opacity-10 p-8 md:p-9 lg:p-8 xl:p-9">
                     <p className="text-center text-base font-medium italic text-body-color">
-                    The Associació Formació i Sensibilització Barcelona is a recently registered organization that started its activities in 2019 as an initiative group.
+                    The Slogan of Associació Formació i Sensibilització Barcelona is "Imagine It. Create It. Achieve It"
                     </p>
                     <span className="absolute left-0 top-0 z-[-1]">
                       <svg

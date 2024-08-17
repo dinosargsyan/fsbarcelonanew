@@ -8,7 +8,7 @@ const Features = () => {
       <section id="features" className=" relative py-16 md:py-20 lg:py-28 mt-16 md:mt-20 lg:mt-28">
         <div className="container h-full">
           <SectionTitle
-            title="EcoDocu objectives are:"
+            title="Our missions are:"
             // paragraph="There are many variations of passages of Lorem Ipsum available but the majority have suffered alteration in some form."
             center
           />
