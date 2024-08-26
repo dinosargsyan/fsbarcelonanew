@@ -156,6 +156,7 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                 onChange={(e) => setTitle(e.target.value)}
                 required
+                maxLength={150}
               ></textarea>
             </div>
             <div className="mb-4">

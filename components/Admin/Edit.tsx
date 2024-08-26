@@ -20,11 +20,10 @@ import {
 import {EditIcon} from "./EditIcon";
 import {EyeIcon} from "./EyeIcon";
 import {DeleteIcon} from "./DeleteIcon";
-
 import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell, getKeyValue} from "@nextui-org/table";
 import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter, useDisclosure} from "@nextui-org/modal";
 import {Tooltip} from "@nextui-org/tooltip";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage } from "firebase/storage";
 
 // Existing code...
 
@@ -148,30 +147,38 @@ const columns = [
   ];
 
 // Modal component for confirming deletion
-const DeletePostModal = ({ post, onClose, onDelete }) => (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 space-y-4">
-        <h2 className="text-xl font-semibold text-gray-800">
-          Are you sure you want to delete this post?
-        </h2>
-        <p className="text-gray-600">{post.title}</p>
-        <div className="flex justify-end space-x-4">
-          <button
-            onClick={() => onDelete(post)}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200"
-          >
-            Yes, Delete
-          </button>
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-200"
-          >
-            Cancel
-          </button>
+const DeletePostModal = ({ post, onClose, onDelete }) => {
+    const handleDelete = () => {
+      onDelete(post); // Perform the delete action
+      onClose(); // Close the modal
+    };
+  
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 space-y-4">
+          <h2 className="text-xl font-semibold text-gray-800">
+            Are you sure you want to delete this post?
+          </h2>
+          <p className="text-gray-600">{post.title}</p>
+          <div className="flex justify-end space-x-4">
+            <button
+              onClick={handleDelete}
+              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200"
+            >
+              Yes, Delete
+            </button>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-200"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
+  
   
 
 const Example: React.FC<ExampleProps> = ({ placeholder }) => {
@@ -225,14 +232,42 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
     );
   };
 
-  const handleDeleteConfirmed = async (post) => {
+//   const handleDeleteConfirmed = async (post) => {
+//     const postRef = doc(db, "news", post.id);
+//     await deleteDoc(postRef);
+//     setPosts((prevPosts) => prevPosts.filter((p) => p.id !== post.id));
+//   };
+
+
+
+const storage = getStorage();
+
+const handleDeleteConfirmed = async (post) => {
+  try {
+    // Delete the post document from Firestore
     const postRef = doc(db, "news", post.id);
     await deleteDoc(postRef);
+
+    // Delete each associated image from Firebase Storage
+    const imageUrls = post.imageURL; // Assuming imageURL is an array of image links
+    const deletePromises = imageUrls.map(async (imageUrl) => {
+      const imageRef = ref(storage, imageUrl); // Get a reference to each file in Storage
+      return deleteObject(imageRef); // Delete the file
+    });
+
+    // Wait for all delete operations to complete
+    await Promise.all(deletePromises);
+
+    // Update the local state to remove the deleted post
     setPosts((prevPosts) => prevPosts.filter((p) => p.id !== post.id));
-  };
+  } catch (error) {
+    console.error("Error deleting post or images:", error);
+  }
+};
+
 
   return (
-    <section className="pb-[80px] pt-[120px]">
+    <section className=" pb-[80px] ">
       {/* <div className="container mx-auto max-w-7xl px-4">
         <div className="-mx-4 flex flex-wrap justify-center">
           <div className="w-full max-w-2xl"> */}
@@ -245,8 +280,8 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
             </button> */}
 
             {/* Display all posts */}
-            <div className="mt-10">
-              <h2>All Posts</h2>
+            <div>
+              <h2></h2>
               
               {/* {posts.map((post) => (
                 <div key={post.id} className="mb-4">
@@ -258,38 +293,43 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
               ))} */}
 
               
+<div>
+<Table aria-label="Example colorful collection table" className="bg-blue-50" >
+  <TableHeader>
+    {columns.map((column) => (
+      <TableColumn key={column.key} className="bg-blue-200 p-2">
+        {column.label}
+      </TableColumn>
+    ))}
+  </TableHeader>
+  <TableBody>
+    {posts.map((post, index) => (
+      <TableRow
+        key={post.id}
+        className={index % 2 === 0 ? "bg-blue-100" : "bg-blue-50"}
+      >
+        <TableCell className="p-2 text-black break-all" >{getKeyValue(post, 'title')}</TableCell>
+        <TableCell className="p-2 text-black">{getKeyValue(post, 'publishDate')}</TableCell>
+        <TableCell className="p-2 text-black">
+          <div className="flex space-x-2">
+            <span className="text-lg text-blue-500 cursor-pointer active:opacity-50">
+              <EyeIcon onClick={() => handleViewPost(post)} />
+            </span>
+            <span className="text-lg text-green-500 cursor-pointer active:opacity-50">
+              <EditIcon onClick={() => handleEditPost(post)} />
+            </span>
+            <span className="text-lg text-red-500 cursor-pointer active:opacity-50">
+              <DeleteIcon onClick={() => handleDeletePost(post)} />
+            </span>
+          </div>
+        </TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+</div>
 
-<Table aria-label="Example static collection table">
-      <TableHeader>
-        {columns.map((column) =>
-          <TableColumn key={column.key}>{column.label}</TableColumn>
-        )}
-      </TableHeader>
-      <TableBody>
-        {posts.map((post) =>
-          <TableRow key={post.id}>
-            {/* {(columnKey) => <TableCell>{getKeyValue(post, columnKey)}</TableCell>} */}
-            <TableCell>{getKeyValue(post, 'title')}</TableCell>
-            <TableCell>{getKeyValue(post, 'publishDate')}</TableCell>
-            <TableCell>
-            <div className="flex space-x-2">
-            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                <EyeIcon onClick={() => handleViewPost(post)}/>
-        </span>
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-         <EditIcon  onClick={() => handleEditPost(post)}/>
-              </span>
-              <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                 <DeleteIcon onClick={() => handleDeletePost(post)} />              
-              </span>
-             
-            </div>
-    </TableCell>
-          </TableRow>
-          
-        )}
-      </TableBody>
-    </Table>
+
             {/* </div>
           </div>
         </div> */}

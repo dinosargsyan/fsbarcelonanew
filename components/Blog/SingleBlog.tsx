@@ -6,8 +6,11 @@ export function truncateString(str, num, title) {
   if (str.length <= num) {
     return str;
   }
-  if (title.length >= 100){
-  return str.slice(0, num) + "...";
+  if (title.length >= 121){
+  return str.slice(0, num-140) + "...";
+  }
+  if (title.length >= 100 && title.lenght <= 120){
+  return str.slice(0, num-50) + "...";
   }
   if(title.length <100 && title.lenght >= 50){
     return str.slice(0, num+50) + "...";
