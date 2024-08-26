@@ -29,16 +29,14 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Existing code...
 
 // Modal component for displaying posts
-const ViewPostModal = ({ post, onClose }) => (
-  <div className="modal">
-    <div className="modal-content">
-      <h2>{post.title}</h2>
-      <p>{post.article}</p>
-      <img src={post.imageURL[0]} alt="Post Image" />
-      <button onClick={onClose}>Close</button>
-    </div>
-  </div>
-);
+const ViewPostModal = ({ post }) => {
+    useEffect(() => {
+      const url = `https://fsbarcelona.org/blog/${post.id}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }, [post.id]);
+  
+    return null; // This component doesn't need to render anything
+  };
 
 // Modal component for editing posts
 const EditPostModal = ({ post, onClose, onSave }) => {
@@ -151,15 +149,30 @@ const columns = [
 
 // Modal component for confirming deletion
 const DeletePostModal = ({ post, onClose, onDelete }) => (
-  <div className="modal">
-    <div className="modal-content">
-      <h2>Are you sure you want to delete this post?</h2>
-      <p>{post.title}</p>
-      <button onClick={() => onDelete(post)}>Yes, Delete</button>
-      <button onClick={onClose}>Cancel</button>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800">
+          Are you sure you want to delete this post?
+        </h2>
+        <p className="text-gray-600">{post.title}</p>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={() => onDelete(post)}
+            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition duration-200"
+          >
+            Yes, Delete
+          </button>
+          <button
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition duration-200"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+  
 
 const Example: React.FC<ExampleProps> = ({ placeholder }) => {
   // Existing state and functions...
