@@ -45,27 +45,92 @@ const EditPostModal = ({ post, onClose, onSave }) => {
   const [title, setTitle] = useState(post.title);
   const [article, setArticle] = useState(post.article);
   const [tags, setTags] = useState(post.tags.join(", "));
+  const [publishDate, setPublishDate] =  useState(post.publishDate);
 
   const handleSave = () => {
     onSave({ ...post, title, article, tags: tags.split(", ") });
     onClose();
   };
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
 
+  const editorConfig = {
+    readonly: false,
+    toolbar: true,
+    spellcheck: true,
+    language: "en",
+    toolbarButtonSize: "medium",
+    toolbarAdaptive: false,
+    showCharsCounter: true,
+    showWordsCounter: true,
+    showXPathInStatusbar: false,
+    askBeforePasteHTML: true,
+    askBeforePasteFromWord: true,
+    //defaultActionOnPaste: "insert_clear_html",
+    uploader: {
+      insertImageAsBase64URI: true
+    },
+    width: 1000,
+    height: 600
+  };
+  
   return (
-    <Modal isOpen={true}>
-     <ModalContent>
-    {/* <div className="modal">
-      <div className="modal-content"> */}
-        <h2>Edit Post</h2>
-        {/* <input value={title} onChange={(e) => setTitle(e.target.value)} />
-        <textarea value={article} onChange={(e) => setArticle(e.target.value)} />
-        <input value={tags} onChange={(e) => setTags(e.target.value)} />
-        <button onClick={handleSave}>Save</button>
-        <button onClick={onClose}>Cancel</button> */}
-      {/* </div>
-    </div> */}
-    </ModalContent>
-    </Modal>
+    
+    <div className="fixed inset-0 w-full flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto">
+      <h2 className="text-xl font-semibold mb-4">Edit Post</h2>
+      <label>Title</label>
+      <input 
+        className="w-full p-2 mb-3 border border-gray-300 rounded" 
+        type="text" 
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)} 
+        placeholder="Title"
+        />
+        <label>Article</label>
+      <div >
+                <JoditEditor
+                  ref={editor}
+                  value={article}
+                  tabIndex={1}
+                  config={editorConfig}
+                  onBlur={(newContent) => setArticle(newContent)}
+                  onChange={() => {}} 
+                />
+              </div>
+     
+      <label>Tags</label>
+      <input 
+        className="w-full p-2 mb-3 border border-gray-300 rounded" 
+        type="text" 
+        value={tags} 
+        onChange={(e) => setTags(e.target.value)} 
+        placeholder="Tags"
+      />
+    <label>Publish date </label>
+    <input
+        className="w-full p-2 mb-3 border border-gray-300 rounded" 
+        type="date"
+        value={publishDate}
+        onChange={(e) => setPublishDate(e.target.value)}
+        placeholder="Date of publish" />
+            
+      <div className="flex justify-end space-x-4">
+        <button 
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" 
+          onClick={handleSave}>
+          Save
+        </button>
+        <button 
+          className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" 
+          onClick={onClose}>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+  
+    
   );
 };
 
