@@ -84,13 +84,25 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
 
   const editor = useRef(null);
   const [content, setContent] = useState("");
-  const config = useMemo(
-    () => ({
-      readonly: false,
-      placeholder: placeholder || "Start typing...",
-    }),
-    [placeholder]
-  );
+  const config = {
+    readonly: false,
+    toolbar: true,
+    spellcheck: true,
+    language: "en",
+    toolbarButtonSize: "medium",
+    toolbarAdaptive: false,
+    showCharsCounter: true,
+    showWordsCounter: true,
+    showXPathInStatusbar: false,
+    askBeforePasteHTML: true,
+    askBeforePasteFromWord: true,
+    //defaultActionOnPaste: "insert_clear_html",
+    uploader: {
+      insertImageAsBase64URI: true
+    },
+    width: 1000,
+    height: 400
+  };
 
   async function handleSubmit(uploadedURLs: string[]) {
     const added = await addDataToFirestore(

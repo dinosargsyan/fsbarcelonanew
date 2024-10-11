@@ -23,7 +23,7 @@ import {DeleteIcon} from "./DeleteIcon";
 import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell, getKeyValue} from "@nextui-org/table";
 import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter, useDisclosure} from "@nextui-org/modal";
 import {Tooltip} from "@nextui-org/tooltip";
-import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage, refFromURL } from "firebase/storage";
 
 // Existing code...
 
@@ -43,9 +43,11 @@ const EditPostModal = ({ post, onClose, onSave }) => {
   const [article, setArticle] = useState(post.article);
   const [tags, setTags] = useState(post.tags.join(", "));
   const [publishDate, setPublishDate] =  useState(post.publishDate);
+  const [imageURL, setImageURL] = useState(post.imageURL);
+  const [files, setFiles] = useState<FileList | null>(null);
 
   const handleSave = () => {
-    onSave({ ...post, title, article, tags: tags.split(", ") });
+    onSave({ ...post, title, imageURL, article, tags: tags.split(", ") });
     onClose();
   };
   const editor = useRef(null);
@@ -70,7 +72,47 @@ const EditPostModal = ({ post, onClose, onSave }) => {
     width: 1000,
     height: 600
   };
+
+  const deleteFromFirebase = (url) => {
+    
+    const desertRef = ref(storage, url);
+    deleteObject(desertRef).then(() => {
+      console.log('desertRef', desertRef);
+      setImageURL((imageURL) => imageURL.filter(urls => urls !== url));
+      
+    }).catch((error) => {
+      console.log('Error exav chjnjvec')
+    });
+  };
   
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFiles(event.target.files);
+    handleUpload()
+  };
+
+  const handleUpload = async () => {
+    if (!files || files.length === 0) return;
+
+    const uploadedURLs: string[] = [];
+
+    try {
+      for (const file of Array.from(files)) {
+        const storageRef = ref(storage, `images/${post.id}/${file.name}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        uploadedURLs.push(url);
+        setImageURL((imageURL) => [...imageURL,  url]);
+        console.log("File Uploaded Successfully", url);
+      }
+      // setUploadedURL(uploadedURLs);
+      // handleSubmit(uploadedURLs);
+    } catch (error) {
+      console.error("Error uploading the files", error);
+    } finally {
+      // setUploading(false);
+    }
+  };
   return (
     
     <div className="fixed inset-0 w-full flex items-center justify-center bg-black bg-opacity-50">
@@ -111,7 +153,37 @@ const EditPostModal = ({ post, onClose, onSave }) => {
         value={publishDate}
         onChange={(e) => setPublishDate(e.target.value)}
         placeholder="Date of publish" />
-            
+            {imageURL.map((url, index) => (
+            <div key={index} className="relative inline-block m-2">
+              <img src={url} alt={`Uploaded image ${index}`} className="w-32 h-32 object-cover" />
+              <button
+                onClick={() => deleteFromFirebase(url)}
+                className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 text-xs rounded-full">
+                X
+              </button>
+            </div>
+          ))}
+
+      <div className="mb-4">
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="file"
+              >
+                Upload Pictures
+              </label>
+              <input
+                type="file"
+                id="file"
+                multiple={true}
+                onChange={handleFileChange}
+                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+              />
+              <button 
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" 
+          onClick={handleUpload}>
+          Upload
+        </button>
+            </div>
       <div className="flex justify-end space-x-4">
         <button 
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" 
@@ -226,6 +298,7 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
       title: updatedPost.title,
       article: updatedPost.article,
       tags: updatedPost.tags,
+      imageURL: updatedPost.imageURL,
     });
     setPosts((prevPosts) =>
       prevPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
@@ -360,4 +433,6 @@ const handleDeleteConfirmed = async (post) => {
   );
 };
 
-export default Example;
+export default Example; 
+
+
