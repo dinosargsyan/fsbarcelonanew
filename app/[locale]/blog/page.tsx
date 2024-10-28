@@ -8,7 +8,7 @@ import {Link} from '@/i18n/routing';
 import { getDatabase, get, ref } from "firebase/database";
 import { useState, useEffect } from "react";
 
-import { database, db } from "../firebaseConfig";
+import { database, db } from "../../firebaseConfig";
 import { getDoc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Metadata } from "next";
 
@@ -43,7 +43,7 @@ const Blog = () => {
   return (
     <>
       <Breadcrumb
-        pageName="Blog Page"
+        pageName="Blog page"
         description="You can find the latest news about The Associació Formació i Sensibilització Barcelona and not only."
       />
 
@@ -62,7 +62,7 @@ const Blog = () => {
                 </div>
               ))} */}
 
-{news.map((newsItem) => (
+            {news.map((newsItem) => (
               <div key={newsItem.id} className="w-full px-4 md:w-2/3 lg:w-1/2 xl:w-1/3">
                 <SingleBlog blog={newsItem} />
               </div>

@@ -1,6 +1,6 @@
 import { Blog } from "@/types/blog";
 import Image from "next/image";
-import Link from "next/link";
+import {Link} from '@/i18n/routing';
 
 export function truncateString(str, num, title) {
   // if (str.length <= num) {

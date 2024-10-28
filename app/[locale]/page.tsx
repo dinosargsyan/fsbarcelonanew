@@ -5,11 +5,12 @@ import Brands from "@/components/Brands";
 import ScrollUp from "@/components/Common/ScrollUp";
 import Contact from "@/components/Contact";
 import Features from "@/components/Features";
-import Partners from "./partners/page";
+import Partners from "../partners/page";
 import Hero from "@/components/Hero";
 import Pricing from "@/components/Pricing";
 import Testimonials from "@/components/Testimonials";
 import Video from "@/components/Video";
+
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Associació Formació I Sensibilització Barcelona",
@@ -18,7 +19,8 @@ export const metadata: Metadata = {
  
 };
 
-export default function Home() {
+export default async function Home({ params: { lang } }: { params: { lang: string } }) {
+  
   return (
     <>
       <ScrollUp />

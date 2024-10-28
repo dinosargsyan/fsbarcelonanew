@@ -1,7 +1,8 @@
 import AboutSectionOne from "@/components/About/AboutSectionOne";
 import AboutSectionTwo from "@/components/About/AboutSectionTwo";
 import Breadcrumb from "@/components/Common/Breadcrumb";
-
+import {useTranslations} from 'next-intl';
+import {Link} from '@/i18n/routing';
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,6 +12,9 @@ export const metadata: Metadata = {
 };
 
 const AboutPage = () => {
+
+
+  const t = useTranslations('home');
   return (
     <>
       <Breadcrumb

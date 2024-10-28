@@ -1,10 +1,14 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
+import {Link} from '@/i18n/routing';
+import {useTranslations} from 'next-intl';
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+
+
 
 const Header = () => {
   // Navbar toggle
@@ -37,7 +41,7 @@ const Header = () => {
   };
 
   const usePathName = usePathname();
-
+  const t = useTranslations('navbar');
   return (
     <>
       <header
@@ -105,6 +109,23 @@ const Header = () => {
                   }`}
                 >
                   <ul className="block lg:flex lg:space-x-12">
+                    <li key='1' className="group relative">
+                      <Link href='/'>
+                      {t('home_name')}
+                      </Link>
+                    </li>
+                    <li key='2' className="group relative">
+                      <Link href='/about'>
+                      {t('about_name')}
+                      </Link>
+                    </li>
+                    <li key='3' className="group relative">
+                      <Link href='/blog'>
+                      {t('blog_name')}
+                      </Link>
+                    </li>
+                  </ul>
+                  {/* <ul className="block lg:flex lg:space-x-12">
                     {menuData.map((menuItem, index) => (
                       <li key={index} className="group relative">
                         {menuItem.path ? (
@@ -155,7 +176,7 @@ const Header = () => {
                         )}
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">

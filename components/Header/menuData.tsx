@@ -1,5 +1,8 @@
 import { Menu } from "@/types/menu";
 
+
+// const t = useTranslations('navbar');
+
 const menuData: Menu[] = [
   {
     id: 1,
@@ -9,7 +12,7 @@ const menuData: Menu[] = [
   },
   {
     id: 2,
-    title: "About Us",
+    title: "About us",
     path: "/about",
     newTab: false,
   },
@@ -25,12 +28,12 @@ const menuData: Menu[] = [
   //   path: "/contact",
   //   newTab: false,
   // },
-  {
-    id: 5,
-    title: "Partners",
-    path: "/partners",
-    newTab: false,
-  },
+  // {
+  //   id: 5,
+  //   title: "Partners",
+  //   path: "/partners",
+  //   newTab: false,
+  // },
   // {
   //   id: 4,
   //   title: "Pages",
