@@ -34,7 +34,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    "app/admin/page.js",
+    "app/[locale]/admin/page.js",
     "build/types/**/*.ts"
   ],
   "exclude": [

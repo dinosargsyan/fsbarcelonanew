@@ -5,12 +5,12 @@ import React, { useState } from "react";
 // import {Input} from "@nextui-org/react";
 
 // Dynamically import the Example component with no SSR
-const Example = dynamic(() => import("../../components/Admin/Example"), { ssr: false });
+const Edit = dynamic(() => import("../../../../components/Admin/Edit"), { ssr: false });
 
 const AdminPage: React.FC = () => {
   const [inputPassword, setInputPassword] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const correctPassword = "kovikkovik";
+  const correctPassword = "";
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputPassword(e.target.value);
@@ -49,7 +49,7 @@ const AdminPage: React.FC = () => {
           >Log in</button>
         </div>
       ) : (
-        <Example placeholder="Enter content here..." />
+        <Edit />
       )}
     </div>
     </section>
