@@ -46,7 +46,7 @@ const Blog = () => {
         pageName="Blog page"
         description="You can find the latest news about The Associació Formació i Sensibilització Barcelona and not only."
       />
-
+<div>
       <section className="pb-[120px] pt-[120px]">
         <div className="container">
           <div className="-mx-4 flex flex-wrap justify-center">
@@ -133,6 +133,7 @@ const Blog = () => {
           </div> */}
         </div>
       </section>
+      </div>
     </>
   );
 };

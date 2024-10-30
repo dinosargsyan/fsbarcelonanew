@@ -11,6 +11,27 @@
       "home_name": "Home",
       "about_name": "About us",
       "blog_name": "Blog"
+    },
+    "admin": {
+      "edit_post": "Edit Post",
+      "title_en": "Title in English",
+      "title_es": "Title in Spanish",
+      "title_ct": "Title in Catalan",
+      "article_en": "Article in English",
+      "article_es": "Article in Spanish",
+      "article_ct": "Article in Catalan",
+      "tags": "Tags",
+      "publish_date": "Publish Date"
+    },
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "upload": "Upload"
+    },
+    "blog":{
+      "views": "Views",
+      "date": "Date"
     }
 
   }

@@ -1,6 +1,11 @@
 import { Blog } from "@/types/blog";
 import Image from "next/image";
 import {Link} from '@/i18n/routing';
+import {useTranslations} from 'next-intl';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+
+
 
 export function truncateString(str, num, title) {
   // if (str.length <= num) {
@@ -24,8 +29,20 @@ export function truncateString(str, num, title) {
 }
 
 
-const SingleBlog = ({ blog }: { blog: Blog }) => {
-  const { title, imageURL, paragraph, author, tags, publishDate, article, views} = blog;
+const SingleBlog = ({ blog, children }: {
+  blog: Blog;
+  children: React.ReactNode;
+ 
+}) => {
+
+  
+
+
+
+  const { title, title_es, title_ct,  imageURL, paragraph, author, tags, publishDate, article, articlle_es, article_ct, views} = blog;
+
+  const t = useTranslations('blog');
+  console.log("ttttttttttt", t)
   return (
     <>
       <div
@@ -47,6 +64,7 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
               href={`/blog/${blog.id}`}
               className="mb-4 block text-xl font-bold text-black hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl"
             >
+              {/* {locale == 'en' ? title : locale == 'es' ? title_es : title_ct} */}
               {title}
             </Link>
           </h3>
@@ -64,14 +82,14 @@ const SingleBlog = ({ blog }: { blog: Blog }) => {
             <div className="border-t border-body-color border-opacity-10 absolute bottom-7">
             <div className="inline-block">
               <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
-                Date
+                {t('date')}
               </h4>
               <p className="text-xs text-body-color">{publishDate}</p>
             </div>
            
             <div className="inline-block ml-10">
               <h4 className="mb-1 text-sm font-medium text-dark dark:text-white">
-                Views
+                {t('views')}
               </h4>
               <p className="flex items-center text-base text-body-color">
                         <span className="mr-3">

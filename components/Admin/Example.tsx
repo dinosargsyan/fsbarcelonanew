@@ -32,7 +32,11 @@ async function getNextDocId(db, collectionName) {
 
 async function addDataToFirestore(
   title: string,
+  title_es: string,
+  title_ct: string,
   article: string,
+  article_es: string,
+  article_ct: string,
   publishDate: string,
   tags: string,
   uploadedURL: string[],
@@ -54,7 +58,11 @@ async function addDataToFirestore(
     const newDocRef = doc(collectionRef, newDocId) 
     await setDoc(newDocRef, {
       title: title,
+      title_es: title_es,
+      title_ct: title_ct,
       article: article,
+      article_es: article_es,
+      article_ct: article_ct,
       publishDate: publishDate,
       tags: [tags],
       imageURL: uploadedURL,
@@ -74,7 +82,11 @@ interface ExampleProps {
 
 const Example: React.FC<ExampleProps> = ({ placeholder }) => {
   const [title, setTitle] = useState("");
+  const [title_es, setTitle_es] = useState("");
+  const [title_ct, setTitle_ct] = useState("");
   const [article, setArticle] = useState("");
+  const [article_es, setArticle_es] = useState("");
+  const [article_ct, setArticle_ct] = useState("");
   const [publishDate, setPublishDate] = useState("");
   const [tags, setTags] = useState<string | null>(null);
 
@@ -84,6 +96,8 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
 
   const editor = useRef(null);
   const [content, setContent] = useState("");
+  const [content_es, setContent_es] = useState("");
+  const [content_ct, setContent_ct] = useState("");
   const config = {
     readonly: false,
     toolbar: true,
@@ -107,7 +121,11 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
   async function handleSubmit(uploadedURLs: string[]) {
     const added = await addDataToFirestore(
       title,
+      title_es,
+      title_ct,
       content,
+      content_es,
+      content_ct,
       publishDate,
       tags || "",
       uploadedURLs,
@@ -115,7 +133,11 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
     );
     if (added) {
       setTitle("");
+      setTitle_es("");
+      setTitle_ct("");
       setArticle("");
+      setArticle_es("");
+      setArticle_ct("");
       setPublishDate("");
       setTags(null);
       alert("Data added");
@@ -151,22 +173,52 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
   };
 
   return (
-    <section className="pb-[80px] pt-[120px]">
+    <section className="pb-[20px] pt-[20px]  ">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="-mx-4 flex flex-wrap justify-center">
-          <div className="w-full max-w-2xl">
-            <div className="mb-4">
+          <div className="w-full max-w-2xl overflow-y-auto max-h-[100vh]">
+          <div className="mb-4  border border-gray-300 p-4">
               <label
                 className="mb-2 block text-sm font-bold text-gray-700"
                 htmlFor="title"
               >
-                Title
+                Title English
               </label>
               <textarea
                 id="title"
-                placeholder="Enter your title"
+                placeholder="Enter your title in English"
                 className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                 onChange={(e) => setTitle(e.target.value)}
+                required
+                maxLength={150}
+              ></textarea>
+            
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="title"
+              >
+                Title Spanish
+              </label>
+              <textarea
+                id="title"
+                placeholder="Enter your title in Spanish"
+                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                onChange={(e) => setTitle_es(e.target.value)}
+                required
+                maxLength={150}
+              ></textarea>
+            
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="title"
+              >
+                Title Catalan
+              </label>
+              <textarea
+                id="title"
+                placeholder="Enter your title in Catalan"
+                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                onChange={(e) => setTitle_ct(e.target.value)}
                 required
                 maxLength={150}
               ></textarea>
@@ -176,7 +228,7 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
                 className="mb-2 block text-sm font-bold text-gray-700"
                 htmlFor="article"
               >
-                Article
+                Article in English
               </label>
               <div tabIndex={1}>
                 <JoditEditor
@@ -184,6 +236,36 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
                   value={article}
                   config={config}
                   onBlur={(newContent) => setContent(newContent)}
+                  onChange={() => {}}
+                />
+                </div>
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="article"
+              >
+                Article in Spanish
+              </label>
+              <div tabIndex={2}>
+                <JoditEditor
+                  ref={editor}
+                  value={article_es}
+                  config={config}
+                  onBlur={(newContent_es) => setContent_es(newContent_es)}
+                  onChange={() => {}}
+                />
+                </div>
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="article"
+              >
+                Article in Catalan
+              </label>
+              <div tabIndex={3}>
+                <JoditEditor
+                  ref={editor}
+                  value={article_ct}
+                  config={config}
+                  onBlur={(newContent_ct) => setContent_ct(newContent_ct)}
                   onChange={() => {}}
                 />
               </div>
@@ -237,6 +319,7 @@ const Example: React.FC<ExampleProps> = ({ placeholder }) => {
               onClick={handleUpload}
               className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
             >
+              
               Submit
             </button>
           </div>

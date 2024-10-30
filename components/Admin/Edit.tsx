@@ -24,6 +24,7 @@ import {  Table,  TableHeader,  TableBody,  TableColumn,  TableRow,  TableCell, 
 import {  Modal,   ModalContent,   ModalHeader,   ModalBody,   ModalFooter, useDisclosure} from "@nextui-org/modal";
 import {Tooltip} from "@nextui-org/tooltip";
 import { ref, uploadBytes, getDownloadURL, deleteObject, getStorage, refFromURL } from "firebase/storage";
+import {useTranslations} from 'next-intl';
 
 // Existing code...
 
@@ -40,14 +41,18 @@ const ViewPostModal = ({ post }) => {
 // Modal component for editing posts
 const EditPostModal = ({ post, onClose, onSave }) => {
   const [title, setTitle] = useState(post.title);
+  const [title_es, setTitle_es] = useState(post.title_es);
+  const [title_ct, setTitle_ct] = useState(post.title_ct);
   const [article, setArticle] = useState(post.article);
+  const [article_es, setArticle_es] = useState(post.article_es);
+  const [article_ct, setArticle_ct] = useState(post.article_ct);
   const [tags, setTags] = useState(post.tags.join(", "));
   const [publishDate, setPublishDate] =  useState(post.publishDate);
   const [imageURL, setImageURL] = useState(post.imageURL);
   const [files, setFiles] = useState<FileList | null>(null);
 
   const handleSave = () => {
-    onSave({ ...post, title, imageURL, article, tags: tags.split(", ") });
+    onSave({ ...post, title, title_es, title_ct, imageURL, article, article_es, article_ct, tags: tags.split(", ") });
     onClose();
   };
   const editor = useRef(null);
@@ -113,20 +118,39 @@ const EditPostModal = ({ post, onClose, onSave }) => {
       // setUploading(false);
     }
   };
+
+  const t = useTranslations('admin');
+  const tb = useTranslations('buttons');
   return (
     
     <div className="fixed inset-0 w-full flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl max-h-[80vh] overflow-y-auto">
-      <h2 className="text-xl font-semibold mb-4">Edit Post</h2>
-      <label>Title</label>
+      <h2 className="text-xl font-semibold mb-4">{t('edit_post')}</h2>
+      <label>{t('title_en')}</label>
       <input 
         className="w-full p-2 mb-3 border border-gray-300 rounded" 
         type="text" 
         value={title} 
         onChange={(e) => setTitle(e.target.value)} 
-        placeholder="Title"
+        placeholder="Title in English"
         />
-        <label>Article</label>
+      <label>{t('title_es')}</label>
+      <input 
+        className="w-full p-2 mb-3 border border-gray-300 rounded" 
+        type="text" 
+        value={title_es} 
+        onChange={(e) => setTitle_es(e.target.value)} 
+        placeholder="Title in Spanish"
+        />
+      <label>{t('title_ct')}</label>
+      <input 
+        className="w-full p-2 mb-3 border border-gray-300 rounded" 
+        type="text" 
+        value={title_ct} 
+        onChange={(e) => setTitle_ct(e.target.value)} 
+        placeholder="Title in Catalan"
+        />
+        <label>{t('article_en')}</label>
       <div >
                 <JoditEditor
                   ref={editor}
@@ -137,8 +161,30 @@ const EditPostModal = ({ post, onClose, onSave }) => {
                   onChange={() => {}} 
                 />
               </div>
+        <label>{t('article_es')}</label>
+      <div >
+                <JoditEditor
+                  ref={editor}
+                  value={article_es}
+                  tabIndex={1}
+                  config={editorConfig}
+                  onBlur={(newContent_es) => setArticle_es(newContent_es)}
+                  onChange={() => {}} 
+                />
+              </div>
+        <label>{t('article_ct')}</label>
+      <div >
+                <JoditEditor
+                  ref={editor}
+                  value={article_ct}
+                  tabIndex={1}
+                  config={editorConfig}
+                  onBlur={(newContent_ct) => setArticle_ct(newContent_ct)}
+                  onChange={() => {}} 
+                />
+              </div>
      
-      <label>Tags</label>
+      <label>{t('tags')}</label>
       <input 
         className="w-full p-2 mb-3 border border-gray-300 rounded" 
         type="text" 
@@ -146,7 +192,7 @@ const EditPostModal = ({ post, onClose, onSave }) => {
         onChange={(e) => setTags(e.target.value)} 
         placeholder="Tags"
       />
-    <label>Publish date </label>
+    <label>{t('publish_date')}</label>
     <input
         className="w-full p-2 mb-3 border border-gray-300 rounded" 
         type="date"
@@ -181,19 +227,19 @@ const EditPostModal = ({ post, onClose, onSave }) => {
               <button 
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" 
           onClick={handleUpload}>
-          Upload
+          {tb('upload')}
         </button>
             </div>
       <div className="flex justify-end space-x-4">
         <button 
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" 
           onClick={handleSave}>
-          Save
+          {tb('save')}
         </button>
         <button 
           className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600" 
           onClick={onClose}>
-          Cancel
+          {tb('cancel')}
         </button>
       </div>
     </div>
